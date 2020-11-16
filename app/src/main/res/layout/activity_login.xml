@@ -5,45 +5,60 @@
     android:background="@drawable/login_bg"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/numberlogin"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="240dp"
-        android:layout_marginLeft="100dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:hint="Number" />
-
-    <EditText
-        android:id="@+id/lgtxtPwd"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="300dp"
-        android:layout_marginLeft="100dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginVertical="370dp"
-        android:background="@drawable/buttonxml"
-        android:text="Login" />
-
-    <TextView
-        android:id="@+id/lnkreister"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:layout_marginVertical="450dp"
-        android:text="New User? Register here"
-        android:textColor="#808080"
-        android:textSize="20dp" />
+        android:layout_height="240dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/roundercorner"
+        android:padding="10dp"
+        >
+
+        <EditText
+            android:id="@+id/numberlogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:inputType="phone"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Mobile Number" />
+
+        <EditText
+            android:id="@+id/lgtxtPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/Login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginVertical="120dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttonxml"
+            android:textColor="@color/colorWhite"
+            android:text="Login" />
+
+        <TextView
+            android:id="@+id/lnkreister"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginVertical="180dp"
+            android:text="New User? Register here"
+            android:textColor="#808080"
+            android:textSize="12dp" />
+
+    </FrameLayout>
 </RelativeLayout>
