@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,39 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.net.ssl.HttpsURLConnection;
 
 
 public class Signup extends AppCompatActivity implements View.OnClickListener {
@@ -48,8 +30,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     TextView alreadyuser;
     Button Signup;
     String url;
-    String em, pm;
-   long  nu;
+    String  pm;
+long nu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +43,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
         Signup = findViewById(R.id.signup);
         Signup.setOnClickListener(this);
         alreadyuser.setOnClickListener(this);
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+
+
 
     }
 
@@ -78,7 +61,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
         if (v.getId() == R.id.signup) {
 
 
-                nu = Integer.parseInt(number.getText().toString());
+    nu = Long.parseLong(number.getText().toString());
                 pm = pass.getText().toString();
 
 
@@ -95,13 +78,15 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-             //         Toast.makeText(Signup.this,"String Response : "+ response.toString(),Toast.LENGTH_LONG).show();
+                      Toast.makeText(Signup.this,"String Response : "+ response.toString(),Toast.LENGTH_LONG).show();
                             try {
                                 Log.d("JSON", String.valueOf(response));
                                Boolean status1= response.getBoolean("status");
 
                                 if (status1==true){
 Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
+//Intent intent=new Intent(Signup.this,Pincreation.class);
+//startActivity(intent);
                                 }
                                 else {
                                     Toast.makeText(Signup.this,"fail",Toast.LENGTH_LONG).show();
