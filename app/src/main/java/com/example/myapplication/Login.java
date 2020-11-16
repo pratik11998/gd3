@@ -28,8 +28,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         newuser=findViewById(R.id.lnkreister);
         login.setOnClickListener(this);
         newuser.setOnClickListener(this);
-
-
     }
 
 
