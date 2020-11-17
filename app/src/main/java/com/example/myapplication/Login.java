@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_login);
         num=findViewById(R.id.numberlogin);
         num.requestFocus();
@@ -79,7 +80,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 if (status1==true){
 
                                    JSONObject jsonObject= response.getJSONObject("user");
-                                    Toast.makeText(Login.this,"succes"+jsonObject.getString("pin"),Toast.LENGTH_LONG).show();
                                         if(jsonObject.get("pin").equals(null))
                                         {
                                             Intent intent=new Intent(Login.this,Pincreation.class);
@@ -122,6 +122,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
         if (v.getId() == R.id.lnkreister) {
+
             Intent intent=new Intent(Login.this,Signup.class);
             startActivity(intent);
         }

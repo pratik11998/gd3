@@ -36,6 +36,7 @@ long nu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_signup);
         pass = findViewById(R.id.txtPwd);
         number = findViewById(R.id.number);
@@ -78,15 +79,14 @@ long nu;
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                      Toast.makeText(Signup.this,"String Response : "+ response.toString(),Toast.LENGTH_LONG).show();
                             try {
                                 Log.d("JSON", String.valueOf(response));
                                Boolean status1= response.getBoolean("status");
 
                                 if (status1==true){
 Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
-//Intent intent=new Intent(Signup.this,Pincreation.class);
-//startActivity(intent);
+Intent intent=new Intent(Signup.this,Login.class);
+startActivity(intent);
                                 }
                                 else {
                                     Toast.makeText(Signup.this,"fail",Toast.LENGTH_LONG).show();
@@ -96,7 +96,6 @@ Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
 
                             }
-//                        resultTextView.setText("String Response : "+ response.toString());
                         }
                     }, new Response.ErrorListener() {
                 @Override

@@ -3,23 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/login_bg"
     android:layout_height="match_parent"
     tools:context=".Pincreation">
 
-    <EditText
-        android:id="@+id/pin"
+    <com.poovam.pinedittextfield.LinePinField
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginVertical="200dp"
-        android:inputType="numberPassword"
-        tools:layout_editor_absoluteX="108dp"
-        tools:layout_editor_absoluteY="209dp" />
+        android:inputType="phone"
+        android:layout_marginVertical="230dp"
+        android:layout_marginLeft="100dp"
+        android:textSize="16sp"
+        app:highlightType="currentField"
+        android:textSelectHandle="@drawable/roundercorner"
+    app:noOfFields="4"
+    app:distanceInBetween="10dp"
+    app:fieldColor="@android:color/black"
+    app:highlightColor="@android:color/black"
+    app:lineThickness="3dp"
+    app:isCustomBackground="true"
+    app:isCursorEnabled="false"
+    app:bottomTextPaddingDp="15dp"
+    android:background="@android:color/white"
+    android:id="@+id/pin"/>
 
     <Button
         android:id="@+id/pinbutton"
         android:layout_marginVertical="400dp"
+        android:layout_marginLeft="150dp"
+        android:background="@drawable/buttonxml"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:textColor="@android:color/white"
+        android:text="Create Pin" />
 </RelativeLayout>

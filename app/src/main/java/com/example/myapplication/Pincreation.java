@@ -45,12 +45,10 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
         int p=Integer.parseInt(epin.getText().toString());
         JSONObject object = new JSONObject();
         try {
-            //input your API parameters
             object.put("pin",p);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // Enter the correct url for your api service site
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/signup/setpin", object,
                 new Response.Listener<JSONObject>() {
                     @Override
