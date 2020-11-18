@@ -3,9 +3,12 @@ package com.example.myapplication;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,6 +41,8 @@ long nu;
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_signup);
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
+
         pass = findViewById(R.id.txtPwd);
         number = findViewById(R.id.number);
         alreadyuser = findViewById(R.id.lnkLogin);
@@ -48,7 +53,27 @@ long nu;
 
 
     }
+    public void setStatusBarColor(View statusBar,int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //status bar height
+            int statusBarHeight = getStatusBarHeight();
+            //action bar height
+            statusBar.getLayoutParams().height =  statusBarHeight;
+            statusBar.setBackgroundColor(color);
+        }
+    }
 
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);

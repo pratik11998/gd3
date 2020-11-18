@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Profile">
+    <View
+        android:id="@+id/statusBarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bootom_navigation"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"
+        app:menu="@menu/navigation"/>
+
+    <Button
+        android:id="@+id/Signout"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/buttonxml"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:text="SignOut" />
+
+    <TextView
+        android:id="@+id/demail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_centerHorizontal="true"
+        android:text="" />
+    <TextView
+        android:id="@+id/dpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_below="@id/demail"
+        android:layout_centerHorizontal="true"
+        android:text="" />
+    <TextView
+        android:id="@+id/dnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="15dp"
+        android:layout_below="@id/dpass"
+        android:text="" />
+
+
+
+</RelativeLayout>

@@ -2,9 +2,13 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +44,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_login);
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
         num=findViewById(R.id.numberlogin);
         num.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -51,7 +56,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         newuser.setOnClickListener(this);
     }
 
+    public void setStatusBarColor(View statusBar,int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //status bar height
+            int statusBarHeight = getStatusBarHeight();
+            //action bar height
+            statusBar.getLayoutParams().height =  statusBarHeight;
+            statusBar.setBackgroundColor(color);
+        }
+    }
 
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.Login) {
@@ -88,7 +113,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                         }
                                         else
                                         {
-
+                                            Intent intent=new Intent(Login.this,MainActivity.class);
+                                            intent.putExtra("token",  response.getString("x-token"));
+                                            startActivity(intent);
                                         }
                                 }
                                 else {

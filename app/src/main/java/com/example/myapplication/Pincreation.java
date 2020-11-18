@@ -3,9 +3,12 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,13 +36,36 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
     String token;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_pincreation);
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
+
         epin=findViewById(R.id.pin);
         bpin=findViewById(R.id.pinbutton);
-         token = getIntent().getStringExtra("token");
+        token = getIntent().getStringExtra("token");
         bpin.setOnClickListener(this);
     }
+    public void setStatusBarColor(View statusBar,int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //status bar height
+            int statusBarHeight = getStatusBarHeight();
+            //action bar height
+            statusBar.getLayoutParams().height =  statusBarHeight;
+            statusBar.setBackgroundColor(color);
+        }
+    }
 
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
     @Override
     public void onClick(View v) {
         int p=Integer.parseInt(epin.getText().toString());
