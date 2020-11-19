@@ -10,14 +10,15 @@
         android:id="@+id/SCHEDULE"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
-        android:layout_height="400dp"></ListView>
+        android:layout_height="400dp">
 
-    <View
+    </ListView>
+
+
+        <View
             android:id="@+id/statusBarBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,6 +29,16 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/navigation"/>
 
-    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="89dp"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
 
 </RelativeLayout>
