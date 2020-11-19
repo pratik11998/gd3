@@ -41,7 +41,7 @@ long nu;
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_signup);
-        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
 
         pass = findViewById(R.id.txtPwd);
         number = findViewById(R.id.number);
@@ -59,6 +59,7 @@ long nu;
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //status bar height
             int statusBarHeight = getStatusBarHeight();
+            //int actionbarheight=getActionBarHeight();
             //action bar height
             statusBar.getLayoutParams().height =  statusBarHeight;
             statusBar.setBackgroundColor(color);
@@ -74,6 +75,15 @@ long nu;
         }
         return result;
     }
+ /*   public int getActionBarHeight() {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        }
+        return actionBarHeight;
+    }*/
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -109,9 +119,10 @@ long nu;
                                Boolean status1= response.getBoolean("status");
 
                                 if (status1==true){
-Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
-Intent intent=new Intent(Signup.this,Login.class);
-startActivity(intent);
+                                   Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
+                                    Intent intent=new Intent(Signup.this,Pincreation.class);
+                                    intent.putExtra("token",  response.getString("x-token"));
+                                    startActivity(intent);
                                 }
                                 else {
                                     Toast.makeText(Signup.this,"fail",Toast.LENGTH_LONG).show();

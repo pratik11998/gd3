@@ -5,10 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <View
-        android:id="@+id/statusBarBackground"
+
+    <ListView
+        android:id="@+id/SCHEDULE"
+        android:layout_marginTop="100dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="400dp"></ListView>
+
+    <View
+            android:id="@+id/statusBarBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
@@ -20,11 +28,6 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/navigation"/>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:layout_centerInParent="true"/>
+    
 
 </RelativeLayout>

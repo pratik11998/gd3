@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
 
         BottomNavigationView bottomNavigationView=findViewById(R.id.bootom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profile);

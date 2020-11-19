@@ -38,7 +38,7 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_pincreation);
-        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimaryDark));
+        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
 
         epin=findViewById(R.id.pin);
         bpin=findViewById(R.id.pinbutton);
@@ -86,6 +86,9 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
 
                             if (status1==true){
                                 Toast.makeText(Pincreation.this," pin succes",Toast.LENGTH_LONG).show();
+                                Intent intent=new Intent(Pincreation.this,MainActivity.class);
+                                intent.putExtra("token",  token);
+                                startActivity(intent);
                             }
                             else {
                                 Toast.makeText(Pincreation.this,"pin fail",Toast.LENGTH_LONG).show();
