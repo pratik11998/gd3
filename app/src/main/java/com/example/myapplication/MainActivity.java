@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int amount1;
     SimpleAdapter mSchedule;
     ListView list;
+    String identity1;
     FloatingActionButton fab;
     ArrayList<HashMap<String, Object>> mylist = new ArrayList<HashMap<String, Object>>();
     @Override
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 public void showlist()
 {
+   mylist.clear();
     JSONObject object = new JSONObject();
     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,"http://15.206.124.137:3000/txn", object,
             new Response.Listener<JSONObject>() {
@@ -129,11 +131,12 @@ public void showlist()
                                 map.put("title",JObject.getString("title") );
                                 map.put("date", JObject.getString("createdDate"));
                                 map.put("amount", JObject.getInt("amount"));
+                                map.put("id", JObject.getString("_id"));
                                 mylist.add(map);
 
                             }
                             mSchedule = new SimpleAdapter(MainActivity.this, mylist, R.layout.row,
-                                    new String[] {"title", "date", "amount","id"}, new int[] {R.id.TRAIN_CELL, R.id.FROM_CELL, R.id.TO_CELL});
+                                    new String[] {"title", "date", "amount"}, new int[] {R.id.TRAIN_CELL, R.id.FROM_CELL, R.id.TO_CELL});
                             list.setAdapter(mSchedule);
 
                         }
@@ -150,7 +153,6 @@ public void showlist()
         @Override
         public void onErrorResponse(VolleyError error) {
             VolleyLog.d("Error", "Error: " + error.getMessage());
-
         }
     }){
         public Map<String, String> getHeaders() throws AuthFailureError {
@@ -168,9 +170,9 @@ public void showlist()
 }
     @Override
     public void onClick(View v) {
-showLoginDialog();
+showinsertDialog();
 }
-    private void showLoginDialog()
+    private void showinsertDialog()
     {
         LayoutInflater li = LayoutInflater.from(this);
         View prompt = li.inflate(R.layout.insertdialog, null);
@@ -224,7 +226,7 @@ showLoginDialog();
 
                             if (status1==true){
                                Toast.makeText(MainActivity.this,"added",Toast.LENGTH_LONG).show();
-
+                                            showlist();
                             }
                             else {
                                 Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_LONG).show();
@@ -239,6 +241,7 @@ showLoginDialog();
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("Error", "Error: " + error.getMessage());
+
 
             }
         }){
@@ -259,8 +262,184 @@ showLoginDialog();
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        String selectedItem=list.getSelectedItem().toString();
-        Toast.makeText(MainActivity.this,selectedItem,Toast.LENGTH_LONG).show();
+        HashMap<String, Object> item=mylist.get(position);
+         identity1=  item.get("id").toString();
+showAlertDialogButtonClicked(view);
+      //  Toast.makeText(MainActivity.this,"hello"+  item.get("id"),Toast.LENGTH_LONG).show();
      return false;
     }
+
+    public  void deletelist(String identity)
+    {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("txn_id",identity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/txn/del", object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            Log.d("JSON", String.valueOf(response));
+                            Boolean status1= response.getBoolean("status");
+
+                            if (status1==true){
+                                Toast.makeText(MainActivity.this,"deleted",Toast.LENGTH_LONG).show();
+                                showlist();
+
+
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_LONG).show();
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Error", "Error: " + error.getMessage());
+
+
+            }
+        }){
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<String, String>();
+                headerMap.put("Content-Type", "application/json");
+                headerMap.put("Authorization", token);
+                return headerMap;
+            }
+
+        };
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void showAlertDialogButtonClicked(View view) {
+
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose an Action");
+
+        // add a list
+        String[] animals = {"Delete", "Edit"};
+        builder.setItems(animals, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        deletelist(identity1);
+                        break;
+                    case 1:
+                        showinsertupdateDialog();
+                        break;
+
+                }
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void showinsertupdateDialog() {
+
+            LayoutInflater li = LayoutInflater.from(this);
+            View prompt = li.inflate(R.layout.insertdialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setView(prompt);
+            final EditText title = prompt.findViewById(R.id.intitle);
+            final EditText amount =prompt.findViewById(R.id.inamount);
+            alertDialogBuilder.setTitle("Add Data");
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+
+                            title1= title.getText().toString();
+                            amount1= Integer.parseInt(amount.getText().toString());
+                            update(title1,amount1,identity1);
+
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    dialog.cancel();
+
+                }
+            });
+
+            alertDialogBuilder.show();
+        }
+
+    private void update(String title1, int amount1,String identity2) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("txn_id",identity2);
+            object.put("amount",amount1);
+            object.put("title",title1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/txn/update", object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            Log.d("JSON", String.valueOf(response));
+                            Boolean status1= response.getBoolean("status");
+
+                            if (status1==true){
+                                Toast.makeText(MainActivity.this,"updated",Toast.LENGTH_LONG).show();
+                                showlist();
+
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_LONG).show();
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Error", "Error: " + error.getMessage());
+
+
+            }
+        }){
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<String, String>();
+                headerMap.put("Content-Type", "application/json");
+                headerMap.put("Authorization", token);
+                return headerMap;
+            }
+
+        };
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
+
 }
