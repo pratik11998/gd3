@@ -136,7 +136,7 @@ public void showlist()
 
                             }
                             mSchedule = new SimpleAdapter(MainActivity.this, mylist, R.layout.row,
-                                    new String[] {"title", "date", "amount"}, new int[] {R.id.TRAIN_CELL, R.id.FROM_CELL, R.id.TO_CELL});
+                                    new String[] {"title",  "amount"}, new int[] {R.id.TRAIN_CELL, R.id.TO_CELL});
                             list.setAdapter(mSchedule);
 
                         }
