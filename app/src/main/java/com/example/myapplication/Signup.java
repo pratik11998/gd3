@@ -3,6 +3,7 @@ package com.example.myapplication;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     TextView alreadyuser;
     Button Signup;
     String url;
+    SharedPreferences.Editor editor;
+    SharedPreferences pref;
     String  pm;
 long nu;
 
@@ -42,7 +45,6 @@ long nu;
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_signup);
         setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
-
         pass = findViewById(R.id.txtPwd);
         number = findViewById(R.id.number);
         alreadyuser = findViewById(R.id.lnkLogin);
@@ -121,7 +123,11 @@ long nu;
                                 if (status1==true){
                                    Toast.makeText(Signup.this,"succes",Toast.LENGTH_LONG).show();
                                     Intent intent=new Intent(Signup.this,Pincreation.class);
-                                    intent.putExtra("token",  response.getString("x-token"));
+                                    pref= getApplicationContext().getSharedPreferences("MyPref", 0);
+                                    editor = pref.edit();
+                                    editor.putString("token",response.getString("x-token"));
+                                    editor.commit();
+                                         intent.putExtra("activity","pinactivity");
                                     startActivity(intent);
                                 }
                                 else {

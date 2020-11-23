@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,16 +36,29 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
 
     EditText epin;
     Button bpin;
+    int pin;
     String token;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_pincreation);
         setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
-
         epin=findViewById(R.id.pin);
         bpin=findViewById(R.id.pinbutton);
-        token = getIntent().getStringExtra("token");
+        String ac=getIntent().getStringExtra("activity");
+        if (ac.equals("pinactivity")) {
+
+            bpin.setText("Create");
+
+        }else {
+
+            bpin.setText("validate");
+        }
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", 0);
+        token= sharedPreferences.getString("token","");
+        pin=sharedPreferences.getInt("pin",0);
         bpin.setOnClickListener(this);
     }
     public void setStatusBarColor(View statusBar,int color){
@@ -68,55 +84,70 @@ public class Pincreation extends AppCompatActivity implements View.OnClickListen
     }
     @Override
     public void onClick(View v) {
-        int p=Integer.parseInt(epin.getText().toString());
-        JSONObject object = new JSONObject();
-        try {
-            object.put("pin",p);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/signup/setpin", object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
 
-                        try {
-                            Log.d("JSON", String.valueOf(response));
-                            Boolean status1= response.getBoolean("status");
+        if (bpin.getText().toString().equalsIgnoreCase("create")) {
 
-                            if (status1==true){
-                                Toast.makeText(Pincreation.this," pin succes",Toast.LENGTH_LONG).show();
-                                Intent intent=new Intent(Pincreation.this,MainActivity.class);
-                                intent.putExtra("token",  token);
-                                startActivity(intent);
+
+            int p = Integer.parseInt(epin.getText().toString());
+            JSONObject object = new JSONObject();
+            try {
+                object.put("pin", p);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://15.206.124.137:3000/signup/setpin", object,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                Log.d("JSON", String.valueOf(response));
+                                Boolean status1 = response.getBoolean("status");
+
+                                if (status1 == true) {
+                                    Toast.makeText(Pincreation.this, " pin succes", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(Pincreation.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(Pincreation.this, "pin fail", Toast.LENGTH_LONG).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
                             }
-                            else {
-                                Toast.makeText(Pincreation.this,"pin fail",Toast.LENGTH_LONG).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
                         }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Error", "Error: " + error.getMessage());
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d("Error", "Error: " + error.getMessage());
 
-            }
-        }){
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headerMap = new HashMap<String, String>();
-                headerMap.put("Content-Type", "application/json");
-                headerMap.put("Authorization", token);
-                return headerMap;
-            }
+                }
+            }) {
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headerMap = new HashMap<String, String>();
+                    headerMap.put("Content-Type", "application/json");
+                    headerMap.put("Authorization", token);
+                    return headerMap;
+                }
 
-        };
+            };
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(jsonObjectRequest);
+        }
+        else
+        {
+if(pin==Integer.parseInt(epin.getText().toString()))
+{
+    Intent intent=new Intent(Pincreation.this,MainActivity.class);
+    startActivity(intent);
+}
+else {
+    Toast.makeText(Pincreation.this,"Worng pin",Toast.LENGTH_LONG).show();
+
+}
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,9 +39,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     EditText num,pass;
     Button login;
     TextView newuser;
-    long nu;
+    long nu,v;
     String pm;
-
+    SharedPreferences.Editor editor;
+    SharedPreferences pref;
+ProgressDialog mProgress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +52,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
         num=findViewById(R.id.numberlogin);
         num.requestFocus();
+        mProgress = new ProgressDialog(Login.this);
+        mProgress.setTitle("Validation");
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
+
+        pass=findViewById(R.id.lgtxtPwd);
+        pref= getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        String ps=pref.getString("password",null);
+        pass.setText(pref.getString("password", null));
+        v=pref.getLong("number", 0);
+        num.setText(""+v);
+        if(pass.getText().toString().equals(""))
+        {
+Toast.makeText(Login.this,"Enter login details",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            mProgress.show();
+            login(v,pass.getText().toString());
+        }
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        pass=findViewById(R.id.lgtxtPwd);
+
         login=findViewById(R.id.Login);
         newuser=findViewById(R.id.lnkreister);
         login.setOnClickListener(this);
@@ -79,72 +105,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
     @Override
     public void onClick(View v) {
+        mProgress.show();
         if (v.getId() == R.id.Login) {
             nu = Long.parseLong(num.getText().toString());
             pm = pass.getText().toString();
+                login(nu,pm);
 
 
-            JSONObject object = new JSONObject();
-            try {
-                //input your API parameters
-                object.put("mobile",nu);
-                object.put("password",pm);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            // Enter the correct url for your api service site
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/login", object,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            try {
-                                Log.d("JSON", String.valueOf(response));
-                                Boolean status1= response.getBoolean("status");
-
-                                if (status1==true){
-
-                                   JSONObject jsonObject= response.getJSONObject("user");
-                                        if(jsonObject.get("pin").equals(null))
-                                        {
-                                            Intent intent=new Intent(Login.this,Pincreation.class);
-                                            intent.putExtra("token",  response.getString("x-token"));
-                                            startActivity(intent);
-                                        }
-                                        else
-                                        {
-                                            Intent intent=new Intent(Login.this,MainActivity.class);
-                                            intent.putExtra("token",  response.getString("x-token"));
-                                            startActivity(intent);
-                                        }
-                                }
-                                else {
-                                    Toast.makeText(Login.this,"fail",Toast.LENGTH_LONG).show();
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d("Error", "Error: " + error.getMessage());
-
-                }
-            }); /*{
-             public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headerMap = new HashMap<String, String>();
-                    headerMap.put("Content-Type", "application/json");
-                    headerMap.put("Authorization", "Bearer " + );
-                    return headerMap;
-                }
-
-            };*/
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(jsonObjectRequest);
         }
 
 
@@ -156,5 +123,78 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
 
+public  void login(Long num,String pass)
+{
+    JSONObject object = new JSONObject();
+    try {
+        //input your API parameters
+        object.put("mobile",num);
+        object.put("password",pass);
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+    // Enter the correct url for your api service site
+    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://15.206.124.137:3000/login", object,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        Log.d("JSON", String.valueOf(response));
+                        Boolean status1= response.getBoolean("status");
+
+                        if (status1==true){
+                            editor = pref.edit();
+                            editor.putString("password", pm);
+                            editor.putLong("number", nu);
+                            editor.putString("token",response.getString("x-token"));
+
+
+                            JSONObject jsonObject= response.getJSONObject("user");
+                            if(jsonObject.get("pin").equals(null))
+                            {
+                                mProgress.dismiss();
+                                Intent intent=new Intent(Login.this,Pincreation.class);
+                               // intent.putExtra("token",  response.getString("x-token"));
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                mProgress.dismiss();
+                                Intent intent=new Intent(Login.this,Pincreation.class);
+                                intent.putExtra("activity","loginactivity");
+                                editor.putInt("pin",jsonObject.getInt("pin"));
+                                editor.commit();
+                                startActivity(intent);
+                            }
+                        }
+                        else {
+                            Toast.makeText(Login.this,"fail",Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            VolleyLog.d("Error", "Error: " + error.getMessage());
+
+        }
+    }); /*{
+             public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headerMap = new HashMap<String, String>();
+                    headerMap.put("Content-Type", "application/json");
+                    headerMap.put("Authorization", "Bearer " + );
+                    return headerMap;
+                }
+
+            };*/
+
+    RequestQueue requestQueue = Volley.newRequestQueue(this);
+    requestQueue.add(jsonObjectRequest);
+}
 
 }
