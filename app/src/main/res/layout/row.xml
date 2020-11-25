@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- row.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="4dip"
-    android:paddingBottom="6dip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:weightSum="1"
+
     >
 
     <TextView android:id="@+id/TRAIN_CELL"
-<<<<<<< Updated upstream
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="1dp"
-        android:layout_weight="0.15"/>
-=======
-        android:layout_width="50dip"
-        android:fontFamily="casual"
+        android:fontFamily=""
+        android:layout_weight="1"
         android:textColor="@android:color/white"
+       />
 
-        android:layout_height="wrap_content"/>
->>>>>>> Stashed changes
-
-<!--    <TextView android:id="@+id/FROM_CELL"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="wrap_content" android:layout_weight="1"/>-->
+    <TextView android:id="@+id/FROM_CELL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_weight="1"/>
 
     <TextView android:id="@+id/TO_CELL"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textAlignment="gravity"
-        android:layout_weight="0.85"/>
+        android:layout_weight="0.5"
+      />
 
 </LinearLayout>

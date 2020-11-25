@@ -3,24 +3,48 @@
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.textclassifier.ConversationActions;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 
-    public class Profile extends AppCompatActivity {
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+    public class Profile extends AppCompatActivity implements View.OnClickListener {
+Button signout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
-
+signout=findViewById(R.id.Signout);
+signout.setOnClickListener(this);
         BottomNavigationView bottomNavigationView=findViewById(R.id.bootom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,4 +86,47 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             }
             return result;
         }
-}
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(Profile.this,"donee",Toast.LENGTH_LONG).show();
+
+        Intent intent=new Intent(Profile.this,Login.class);
+            startActivity(intent);
+          /*  HttpClient httpclient = new DefaultHttpClient();
+
+            HttpPost httppost = new HttpPost(
+                    "https://api.twilio.com/2010-04-01/Accounts/{ACCOUNT_SID}/SMS/Messages");
+            String base64EncodedCredentials = "Basic "
+                    + Base64.encodeToString(
+                    ("AC7377f3f6c21e6263f5db4a889129d3c5" + ":" + "0fcb5f58bb83014a687cca546cfe500a").getBytes(),
+                    Base64.NO_WRAP);
+
+            httppost.setHeader("Authorization",
+                    base64EncodedCredentials);
+            try {
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("From",
+                        "+12057497163"));
+                nameValuePairs.add(new BasicNameValuePair("To",
+                        "+919028687650"));
+                nameValuePairs.add(new BasicNameValuePair("Body",
+                        "Welcome to Twilio"));
+
+                httppost.setEntity(new UrlEncodedFormEntity(
+                        nameValuePairs));
+
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                System.out.println("Entity post is: "
+                        + EntityUtils.toString(entity));
+
+
+            } catch (Exception e) {
+              Toast.makeText(Profile.this,e.getMessage(),Toast.LENGTH_LONG).show();
+            }*/
+        }
+
+        }

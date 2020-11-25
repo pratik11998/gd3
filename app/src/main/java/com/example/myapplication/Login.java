@@ -63,13 +63,14 @@ ProgressDialog mProgress;
         String ps=pref.getString("password",null);
         pass.setText(pref.getString("password", null));
         v=pref.getLong("number", 0);
-        num.setText(""+v);
+
         if(pass.getText().toString().equals(""))
         {
 Toast.makeText(Login.this,"Enter login details",Toast.LENGTH_LONG).show();
         }
         else
         {
+            num.setText(""+v);
             mProgress.show();
             login(v,pass.getText().toString());
         }
@@ -169,6 +170,8 @@ public  void login(Long num,String pass)
                             }
                         }
                         else {
+                            mProgress.dismiss();
+                            login.setError("wrong Credentials/User Not Registerd");
                             Toast.makeText(Login.this,"fail",Toast.LENGTH_LONG).show();
                         }
 
