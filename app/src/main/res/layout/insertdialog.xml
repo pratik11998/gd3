@@ -3,12 +3,13 @@
     android:layout_width='fill_parent'
     android:layout_height='fill_parent'
     android:orientation='vertical'
-    android:padding='10sp' >
+    android:padding='10dp' >
 
     <EditText
         android:id='@+id/intitle'
         android:layout_width='fill_parent'
         android:layout_height='wrap_content'
+        android:maxLength="10"
         android:hint='Title'
         android:singleLine='true'>
         <requestFocus />
@@ -17,6 +18,7 @@
     <EditText
         android:id='@+id/inamount'
         android:layout_width='match_parent'
+        android:maxLength="6"
         android:layout_height='wrap_content'
         android:hint='Amount'
         android:ems='10'

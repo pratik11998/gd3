@@ -17,24 +17,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
     public class Profile extends AppCompatActivity implements View.OnClickListener {
 Button signout;
@@ -92,7 +82,8 @@ signout.setOnClickListener(this);
             Toast.makeText(Profile.this,"donee",Toast.LENGTH_LONG).show();
 
         Intent intent=new Intent(Profile.this,Login.class);
-            startActivity(intent);
+        intent.putExtra("pro1","pro1");
+        startActivity(intent);
           /*  HttpClient httpclient = new DefaultHttpClient();
 
             HttpPost httppost = new HttpPost(

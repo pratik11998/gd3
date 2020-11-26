@@ -32,8 +32,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     EditText num,pass;
@@ -49,39 +47,35 @@ ProgressDialog mProgress;
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_login);
-        setStatusBarColor(findViewById(R.id.statusBarBackground),getResources().getColor(R.color.colorPrimary));
-        num=findViewById(R.id.numberlogin);
+        setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimary));
+        num = findViewById(R.id.numberlogin);
         num.requestFocus();
         mProgress = new ProgressDialog(Login.this);
         mProgress.setTitle("Validation");
         mProgress.setMessage("Please wait...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
-
-        pass=findViewById(R.id.lgtxtPwd);
-        pref= getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        String ps=pref.getString("password",null);
+        pass = findViewById(R.id.lgtxtPwd);
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        String ps = pref.getString("password", null);
         pass.setText(pref.getString("password", null));
-        v=pref.getLong("number", 0);
+        v = pref.getLong("number", 0);
+            if (pass.getText().toString().equals("")) {
+                Toast.makeText(Login.this, "Enter login details", Toast.LENGTH_LONG).show();
+            } else {
+                num.setText("" + v);
+                mProgress.show();
+                login(v, pass.getText().toString());
+            }
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-        if(pass.getText().toString().equals(""))
-        {
-Toast.makeText(Login.this,"Enter login details",Toast.LENGTH_LONG).show();
+            login = findViewById(R.id.Login);
+            newuser = findViewById(R.id.lnkreister);
+            login.setOnClickListener(this);
+            newuser.setOnClickListener(this);
         }
-        else
-        {
-            num.setText(""+v);
-            mProgress.show();
-            login(v,pass.getText().toString());
-        }
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-        login=findViewById(R.id.Login);
-        newuser=findViewById(R.id.lnkreister);
-        login.setOnClickListener(this);
-        newuser.setOnClickListener(this);
-    }
 
     public void setStatusBarColor(View statusBar,int color){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

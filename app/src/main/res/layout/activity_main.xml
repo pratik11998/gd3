@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/login_bg"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -10,9 +11,8 @@
         android:id="@+id/SCHEDULE"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp">
-
-    </ListView>
+        android:listSelector="@android:color/tertiary_text_dark"
+        android:layout_marginTop="100dp"/>
 
     <View
         android:id="@+id/statusBarBackground"
@@ -38,8 +38,11 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="89dp"
+        android:background="@drawable/ic_baseline_add_circle_24"
+        android:backgroundTint="@color/colorWhite"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:elevation="8dp"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24" />
 
 
 </RelativeLayout>

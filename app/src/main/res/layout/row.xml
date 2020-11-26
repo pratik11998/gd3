@@ -10,17 +10,22 @@
     <TextView android:id="@+id/TRAIN_CELL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="14dp"
         android:fontFamily=""
         android:layout_weight="1"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
        />
 
     <TextView android:id="@+id/FROM_CELL"
         android:layout_width="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:textColor="@android:color/black"
         android:layout_height="wrap_content" android:layout_weight="1"/>
 
     <TextView android:id="@+id/TO_CELL"
         android:layout_width="wrap_content"
+        android:textColor="@android:color/black"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
       />

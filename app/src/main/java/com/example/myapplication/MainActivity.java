@@ -37,12 +37,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemLongClickListener {
-    String token, title1;
+    String token, title1,diatitle,amount2;
     int amount1;
     SimpleAdapter mSchedule;
     ListView list;
@@ -134,7 +139,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     JSONObject JObject = jsonArray.getJSONObject(i);
                                     HashMap<String, Object> map = new HashMap<String, Object>();
                                     map.put("title", JObject.getString("title"));
-                                    map.put("date", JObject.getString("createdDate"));
+                                    String URL=JObject.getString("createdDate");
+                                    String date1 = URL.substring(0,10);
+                                    String time=URL.substring(11,19);
+                                    String datetime=date1+"::"+time;
+                                    map.put("date", datetime);
                                     map.put("amount", JObject.getInt("amount"));
                                     map.put("id", JObject.getString("_id"));
                                     mylist.add(map);
@@ -179,34 +188,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showinsertDialog() {
+       SweetAlertDialog sweetAlertDialog= new SweetAlertDialog(this);
+
         LayoutInflater li = LayoutInflater.from(this);
         View prompt = li.inflate(R.layout.insertdialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setView(prompt);
+       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+      //  alertDialogBuilder.setView(prompt);
+        sweetAlertDialog.setCustomView(prompt);
         final EditText title = prompt.findViewById(R.id.intitle);
         final EditText amount = prompt.findViewById(R.id.inamount);
-        alertDialogBuilder.setTitle("Add Data");
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        title1 = title.getText().toString();
-                        amount1 = Integer.parseInt(amount.getText().toString());
-                        insert(title1, amount1);
-
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        sweetAlertDialog.setTitle("Add Data");
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.setConfirmButton("add", new SweetAlertDialog.OnSweetClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                title1 = title.getText().toString();
+                amount1 = Integer.parseInt(amount.getText().toString());
+                insert(title1, amount1);
 
             }
         });
+        sweetAlertDialog.setCancelButton("cancel", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.cancel();
+            }
+        });
 
-        alertDialogBuilder.show();
+
+        sweetAlertDialog.show();
     }
 
     public void insert(String title1, int amount1) {
@@ -266,8 +276,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         HashMap<String, Object> item = mylist.get(position);
         identity1 = item.get("id").toString();
+        diatitle=item.get("title").toString();
+        amount2=item.get("amount").toString();
+        String URL = item.get("date").toString();
+
         showAlertDialogButtonClicked(view);
-        //  Toast.makeText(MainActivity.this,"hello"+  item.get("id"),Toast.LENGTH_LONG).show();
+
         return false;
     }
 
@@ -385,9 +399,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialogBuilder.setView(prompt);
         final EditText title = prompt.findViewById(R.id.intitle);
         final EditText amount = prompt.findViewById(R.id.inamount);
+        title.setText(diatitle);
+        amount.setText(amount2);
         alertDialogBuilder.setTitle("Add Data");
         alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
