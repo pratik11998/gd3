@@ -49,7 +49,7 @@ ProgressDialog mProgress;
         setContentView(R.layout.activity_login);
         setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimary));
         num = findViewById(R.id.numberlogin);
-        num.requestFocus();
+      //  num.requestFocus();
         mProgress = new ProgressDialog(Login.this);
         mProgress.setTitle("Validation");
         mProgress.setMessage("Please wait...");
@@ -67,9 +67,6 @@ ProgressDialog mProgress;
                 mProgress.show();
                 login(v, pass.getText().toString());
             }
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
             login = findViewById(R.id.Login);
             newuser = findViewById(R.id.lnkreister);
             login.setOnClickListener(this);

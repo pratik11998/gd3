@@ -189,11 +189,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showinsertDialog() {
        SweetAlertDialog sweetAlertDialog= new SweetAlertDialog(this);
-
         LayoutInflater li = LayoutInflater.from(this);
         View prompt = li.inflate(R.layout.insertdialog, null);
-       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-      //  alertDialogBuilder.setView(prompt);
         sweetAlertDialog.setCustomView(prompt);
         final EditText title = prompt.findViewById(R.id.intitle);
         final EditText amount = prompt.findViewById(R.id.inamount);
@@ -205,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 title1 = title.getText().toString();
                 amount1 = Integer.parseInt(amount.getText().toString());
                 insert(title1, amount1);
+                sweetAlertDialog.cancel();
 
             }
         });
@@ -341,42 +339,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showAlertDialogButtonClicked(View view) {
 
         // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_AppCompat_Light_Dialog_Alert);
         builder.setTitle("Choose an Action");
-
         // add a list
         String[] animals = {"Delete", "Edit"};
         builder.setItems(animals, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
+
+
                     case 0:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-                        builder.setTitle("Confirm");
-                        builder.setMessage("Are you sure?");
-
-                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Do nothing but close the dialog
-                                deletelist(identity1);
-                                dialog.dismiss();
-                            }
-                        });
-
-                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
+                        SweetAlertDialog sweetAlertDialog=new SweetAlertDialog(
+                                MainActivity.this, SweetAlertDialog.WARNING_TYPE);
+                                sweetAlertDialog.setTitleText("Are you sure?")
+                                //.setContentText("Won't be able to recover this file!")
+                                .setConfirmText("Yes, delete it!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                // Do nothing
-                                dialog.dismiss();
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                deletelist(identity1);
+sweetAlertDialog.cancel();
                             }
-                        });
-
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        })
+                                .show();
                         break;
                     case 1:
                         showinsertupdateDialog();
@@ -392,37 +377,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showinsertupdateDialog() {
-
+        SweetAlertDialog sweetAlertDialog= new SweetAlertDialog(this);
         LayoutInflater li = LayoutInflater.from(this);
         View prompt = li.inflate(R.layout.insertdialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setView(prompt);
+        sweetAlertDialog.setCustomView(prompt);
         final EditText title = prompt.findViewById(R.id.intitle);
         final EditText amount = prompt.findViewById(R.id.inamount);
         title.setText(diatitle);
         amount.setText(amount2);
-        alertDialogBuilder.setTitle("Add Data");
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        title1 = title.getText().toString();
-                        amount1 = Integer.parseInt(amount.getText().toString());
-                        update(title1, amount1, identity1);
-
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        sweetAlertDialog.setTitle("update Data");
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.setConfirmButton("Update", new SweetAlertDialog.OnSweetClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                title1 = title.getText().toString();
+                amount1 = Integer.parseInt(amount.getText().toString());
+                update(title1, amount1,identity1);
+                sweetAlertDialog.cancel();
 
             }
         });
+        sweetAlertDialog.setCancelButton("cancel", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.cancel();
+            }
+        });
 
-        alertDialogBuilder.show();
+
+        sweetAlertDialog.show();
+
+
+
+
+
     }
 
     private void update(String title1, int amount1, String identity2) {

@@ -10,7 +10,9 @@
         android:layout_width='fill_parent'
         android:layout_height='wrap_content'
         android:maxLength="10"
-        android:hint='Title'
+        android:hint="Title"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
         android:singleLine='true'>
         <requestFocus />
     </EditText>
@@ -19,10 +21,12 @@
         android:id='@+id/inamount'
         android:layout_width='match_parent'
         android:maxLength="6"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
         android:layout_height='wrap_content'
         android:hint='Amount'
         android:ems='10'
-        android:inputType='numberPassword' >
+        android:inputType='number' >
     </EditText>
 
 </LinearLayout>

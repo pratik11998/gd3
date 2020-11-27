@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -55,16 +56,26 @@ signout.setOnClickListener(this);
             }
         });
     }
-        public void setStatusBarColor(View statusBar, int color){
+        public void setStatusBarColor(View statusBar, int color) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Window w = getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 //status bar height
                 int statusBarHeight = getStatusBarHeight();
+                int actionbarheight = getActionBarHeight();
                 //action bar height
-                statusBar.getLayoutParams().height =  statusBarHeight;
+                statusBar.getLayoutParams().height = actionbarheight + statusBarHeight;
                 statusBar.setBackgroundColor(color);
             }
+        }
+
+        public int getActionBarHeight() {
+            int actionBarHeight = 0;
+            TypedValue tv = new TypedValue();
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            }
+            return actionBarHeight;
         }
 
 
@@ -79,7 +90,7 @@ signout.setOnClickListener(this);
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(Profile.this,"donee",Toast.LENGTH_LONG).show();
+
 
         Intent intent=new Intent(Profile.this,Login.class);
         intent.putExtra("pro1","pro1");
