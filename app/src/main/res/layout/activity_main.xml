@@ -13,6 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
       android:drawSelectorOnTop="true"
+        android:divider="@drawable/divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/listsel"
         android:layout_marginTop="100dp"/>
 
     <View
@@ -40,7 +43,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginBottom="89dp"
         android:background="@drawable/ic_baseline_add_circle_24"
-        android:backgroundTint="@color/colorWhite"
+        android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         app:elevation="8dp"
         app:srcCompat="@drawable/ic_baseline_add_circle_24" />

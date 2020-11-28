@@ -354,6 +354,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 MainActivity.this, SweetAlertDialog.WARNING_TYPE);
                                 sweetAlertDialog.setTitleText("Are you sure?")
                                 //.setContentText("Won't be able to recover this file!")
+                                .setCancelText("Cancel").setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.cancel();
+                                    }
+                                })
                                 .setConfirmText("Yes, delete it!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
